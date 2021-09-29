@@ -42,6 +42,27 @@ class Game2048(Chrome):
         """
         self.actions[idx].perform()
 
+    def get_score(self) -> int:
+        """ Get the current game score.
+
+        :return: game score
+        :rtype: int
+        """
+        score = self.find_element_by_class_name('score-container')
+        score_text = score.text  # will also include children text
+
+        # remove child text if it exists
+        # --actions that increase game score create a child that shows the amt
+        # --otherwise the game removes the elem
+        try:
+            addition = score.find_element_by_class_name('score-addition')
+            addition_text = addition.text
+            score_text = score_text.replace(addition_text, '')
+        except NoSuchElementException:
+            pass
+
+        return int(score_text)
+
     def game_is_over(self) -> bool:
         """ Check if game is in game over state.
             One sign is whether or not a specific div is class 'game-over'.

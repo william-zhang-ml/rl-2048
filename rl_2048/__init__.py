@@ -1,4 +1,5 @@
 """ Tools for reinforcement learning applied to 2048. """
+from typing import List
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
@@ -41,6 +42,26 @@ class Game2048(Chrome):
         type   idx: int
         """
         self.actions[idx].perform()
+
+    def get_state(self) -> List[List[int]]:
+        """ Get the numbers in the 16-tile game board.
+
+        :return: game board tiles
+        :rtype:  List[List[int]]
+        """
+        state = []
+        for row in range(1, 5):
+            row_state = []
+            for col in range(1, 5):
+                # look for a specific tile at some row and col
+                tile_class = f'tile-position-{col}-{row}'
+                try:
+                    tile = self.find_element_by_class_name(tile_class)
+                    row_state.append(int(tile.text))
+                except NoSuchElementException:
+                    pass
+            state.append(row_state)
+        return state
 
     def get_score(self) -> int:
         """ Get the current game score.

@@ -3,6 +3,7 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
+from selenium.common.exceptions import NoSuchElementException
 
 
 class Game2048(Chrome):
@@ -40,3 +41,18 @@ class Game2048(Chrome):
         type   idx: int
         """
         self.actions[idx].perform()
+
+    def game_is_over(self) -> bool:
+        """ Check if game is in game over state.
+            One sign is whether or not a specific div is class 'game-over'.
+
+        :return: whether or not the game is in game over state
+        :rtype:  bool
+        """
+        status = None
+        try:
+            self.find_element_by_class_name('game-over')
+            status = True
+        except NoSuchElementException:
+            status = False
+        return status

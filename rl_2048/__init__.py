@@ -32,3 +32,11 @@ class Game2048(Chrome):
         super(Game2048, self).__enter__()
         self.get('https://2048game.com/')
         return self
+
+    def act(self, idx: int) -> None:
+        """ Execute a game command: up, left, own, right.
+
+        :param idx: index of action to perform:
+        type   idx: int
+        """
+        self.actions[idx].perform()

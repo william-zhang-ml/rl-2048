@@ -1,3 +1,4 @@
+""" Installation configuration. """
 from setuptools import setup
 
 

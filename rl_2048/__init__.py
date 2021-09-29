@@ -3,9 +3,7 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.common.exceptions import (
-    NoSuchElementException,
-    ElementNotInteractableException)
+from selenium.common.exceptions import NoSuchElementException
 
 
 class Game2048(Chrome):

@@ -3,7 +3,9 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import (
+    NoSuchElementException,
+    ElementNotInteractableException)
 
 
 class Game2048(Chrome):
@@ -77,3 +79,7 @@ class Game2048(Chrome):
         except NoSuchElementException:
             status = False
         return status
+
+    def restart(self) -> None:
+        """ Restarts the game if the game is over; otherwise error. """
+        self.find_element_by_class_name('retry-button').click()

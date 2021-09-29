@@ -27,7 +27,8 @@ class Game2048(Chrome):
             ActionChains(self).send_keys(Keys.DOWN),
             ActionChains(self).send_keys(Keys.RIGHT)]
 
-    def __enter__(self) -> None:
+    def __enter__(self):
         """ Open browser and game. """
         super(Game2048, self).__enter__()
         self.get('https://2048game.com/')
+        return self

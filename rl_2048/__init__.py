@@ -18,6 +18,8 @@ class Game2048(Chrome):
     def __init__(self,
                  path: str,
                  headless: bool = False,
+                 height: int = 500,
+                 width: int = 500,
                  img_size: int = 128) -> None:
         """ Constructor.
 
@@ -28,16 +30,28 @@ class Game2048(Chrome):
         :param img_size: desired game board screenshot size, defaults to 128
         :type  img_size: int, optional
         """
+
         options = Options()
         if headless:
             options.add_argument('--headless')
         super(Game2048, self).__init__(path, options=options)
+
+        # store vars
+        self.path = path
+        self.headless = headless
+        self.height = height
+        self.width = width
+        self.img_size = img_size
+
+        # misc setup
+        self.set_window_size(width, height)  # if too small screenshot cropped
         self.actions = [
             ActionChains(self).send_keys(Keys.UP),
             ActionChains(self).send_keys(Keys.LEFT),
             ActionChains(self).send_keys(Keys.DOWN),
             ActionChains(self).send_keys(Keys.RIGHT)]
-        self.img_size = img_size
+
+        # load game files
         game_path = Path(os.path.dirname(__file__)) / 'game' / 'index.html'
         self.get('file:///' + str(game_path))
 

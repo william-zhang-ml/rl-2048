@@ -1,5 +1,7 @@
 """ Tools for reinforcement learning applied to 2048. """
 from typing import List
+import os
+from pathlib import Path
 from io import BytesIO
 from PIL import Image
 from selenium.webdriver import Chrome
@@ -36,7 +38,8 @@ class Game2048(Chrome):
             ActionChains(self).send_keys(Keys.DOWN),
             ActionChains(self).send_keys(Keys.RIGHT)]
         self.img_size = img_size
-        self.get('https://2048game.com/')
+        game_path = Path(os.path.dirname(__file__)) / 'game' / 'index.html'
+        self.get('file:///' + str(game_path))
 
     def __enter__(self):
         """ Open browser and game. """

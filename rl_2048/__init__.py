@@ -71,9 +71,9 @@ class Game2048(Chrome):
                     except NoSuchElementException:
                         break
                     except ValueError:
-                        pass
+                        pass  # need to wait for game to stabilize
                     except StaleElementReferenceException:
-                        pass
+                        pass  # need to wait for game to stabilize
         return state
 
     def get_score(self) -> int:

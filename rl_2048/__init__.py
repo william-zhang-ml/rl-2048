@@ -64,6 +64,16 @@ class Game2048(Chrome):
         super(Game2048, self).__enter__()
         return self
 
+    def __repr__(self):
+        return ''.join([
+            'Game2048(',
+            f'path="{self.path}", ',
+            f'headless={self.headless}, ',
+            f'height={self.height}, ',
+            f'width={self.width}, ',
+            f'img_size={self.img_size}'
+            ')'])
+
     def act(self, idx: int) -> None:
         """ Execute a game command: up, left, own, right.
 

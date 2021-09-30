@@ -18,7 +18,7 @@ class Game2048(Chrome):
     def __init__(self,
                  path: str,
                  headless: bool = False,
-                 height: int = 500,
+                 height: int = 600,
                  width: int = 500,
                  img_size: int = 128) -> None:
         """ Constructor.
@@ -141,7 +141,7 @@ class Game2048(Chrome):
 
     def restart(self) -> None:
         """ Restarts the game if the game is over; otherwise error. """
-        self.find_element_by_class_name('retry-button').click()
+        self.find_element_by_class_name('restart-button').click()
 
     def take_screenshot(self) -> Image:
         """ Take a screenshot of the 16-tile game board.

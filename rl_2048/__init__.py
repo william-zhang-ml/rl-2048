@@ -55,18 +55,16 @@ class Game2048(Chrome):
         :return: game board tiles
         :rtype:  List[List[int]]
         """
-        state = []
-        for row in range(1, 5):
-            row_state = []
-            for col in range(1, 5):
-                # look for a specific tile at some row and col
-                tile_class = f'tile-position-{col}-{row}'
+        state = [[0] * 4 for _ in range(4)]
+        for row in range(4):
+            for col in range(4):
+                # look for a specific tile at some row and col (1-index)
+                tile_class = f'tile-position-{col + 1}-{row + 1}'
                 try:
                     tile = self.find_element_by_class_name(tile_class)
-                    row_state.append(int(tile.text))
+                    state[row][col] = int(tile.text)
                 except NoSuchElementException:
                     pass
-            state.append(row_state)
         return state
 
     def get_score(self) -> int:

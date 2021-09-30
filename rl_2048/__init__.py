@@ -34,7 +34,6 @@ class Game2048(Chrome):
         :param img_size: game board screenshot size in pixels, defaults to 128
         :type  img_size: int, optional
         """
-
         options = Options()
         if headless:
             options.add_argument('--headless')
@@ -64,7 +63,12 @@ class Game2048(Chrome):
         super(Game2048, self).__enter__()
         return self
 
-    def __repr__(self):
+    def __repr__(self) -> str:
+        """ Representation.
+
+        :return: Game instantiation settings
+        :rtype:  str
+        """
         return ''.join([
             'Game2048(',
             f'path="{self.path}", ',

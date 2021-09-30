@@ -1,5 +1,7 @@
 """ Tools for reinforcement learning applied to 2048. """
 from typing import List
+from io import BytesIO
+from PIL import Image
 from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
@@ -11,13 +13,16 @@ class Game2048(Chrome):
     """ Interface for a reinforcement learning agent to play 2048. """
     def __init__(self,
                  path: str,
-                 headless: bool = False) -> None:
+                 headless: bool = False,
+                 img_size: int = 128) -> None:
         """ Constructor.
 
         :param path:     path to chromedriver
         :type  path:     str
         :param headless: run browser headless or not, defaults to False
         :type  headless: bool, optional
+        :param img_size: desired game board screenshot size, defaults to 128
+        :type  img_size: int, optional
         """
         options = Options()
         if headless:
@@ -28,6 +33,7 @@ class Game2048(Chrome):
             ActionChains(self).send_keys(Keys.LEFT),
             ActionChains(self).send_keys(Keys.DOWN),
             ActionChains(self).send_keys(Keys.RIGHT)]
+        self.img_size = img_size
         self.get('https://2048game.com/')
 
     def __enter__(self):
@@ -102,3 +108,13 @@ class Game2048(Chrome):
     def restart(self) -> None:
         """ Restarts the game if the game is over; otherwise error. """
         self.find_element_by_class_name('retry-button').click()
+
+    def take_tile_screenshot(self) -> Image:
+        """ Take a screenshot of the 16-tile game board.
+
+        :return: screenshot
+        :rtype:  Image
+        """
+        tiles = self.find_element_by_class_name('grid-container')
+        pseudofile = BytesIO(tiles.screenshot_as_png)
+        return Image.open(pseudofile).resize((self.img_size, self.img_size))

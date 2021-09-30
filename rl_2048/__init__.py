@@ -79,7 +79,7 @@ class Game2048(Chrome):
             ')'])
 
     def act(self, idx: int) -> None:
-        """ Execute a game command: up, left, own, right.
+        """ Execute a game command: up, left, down, right.
 
         :param idx: index of action to perform:
         type   idx: int

@@ -6,7 +6,7 @@ from selenium.webdriver import Chrome
 from selenium.webdriver.chrome.options import Options
 from selenium.webdriver.common.keys import Keys
 from selenium.webdriver.common.action_chains import ActionChains
-from selenium.common.exceptions import NoSuchElementException
+from selenium.common.exceptions import ElementNotSelectableException, NoSuchElementException, StaleElementReferenceException
 
 
 class Game2048(Chrome):
@@ -60,11 +60,18 @@ class Game2048(Chrome):
             for col in range(4):
                 # look for a specific tile at some row and col (1-index)
                 tile_class = f'tile-position-{col + 1}-{row + 1}'
-                try:
-                    tile = self.find_element_by_class_name(tile_class)
-                    state[row][col] = int(tile.text)
-                except NoSuchElementException:
-                    pass
+                tile_num = None
+                while tile_num is None:
+                    try:
+                        tile = self.find_element_by_class_name(tile_class)
+                        tile_num = int(tile.text)
+                        state[row][col] = tile_num
+                    except NoSuchElementException:
+                        break
+                    except ValueError:
+                        pass
+                    except StaleElementReferenceException:
+                        pass
         return state
 
     def get_score(self) -> int:

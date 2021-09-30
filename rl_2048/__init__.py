@@ -27,7 +27,11 @@ class Game2048(Chrome):
         :type  path:     str
         :param headless: run browser headless or not, defaults to False
         :type  headless: bool, optional
-        :param img_size: desired game board screenshot size, defaults to 128
+        :param height:   window height in pixels, defaults to 500
+        :type  height:   int, optional
+        :param width:    window width in pixels, defaults to 500
+        :type  width:    int, optional
+        :param img_size: game board screenshot size in pixels, defaults to 128
         :type  img_size: int, optional
         """
 
@@ -139,7 +143,7 @@ class Game2048(Chrome):
         """ Restarts the game if the game is over; otherwise error. """
         self.find_element_by_class_name('retry-button').click()
 
-    def take_tile_screenshot(self) -> Image:
+    def take_screenshot(self) -> Image:
         """ Take a screenshot of the 16-tile game board.
 
         :return: screenshot

@@ -68,11 +68,17 @@ class Game2048(Chrome):
                 tile_num = None
                 while tile_num is None:
                     try:
-                        tile = self.find_element_by_class_name(tile_class)
-                        tile_num = int(tile.text)
+                        tiles = self.find_elements_by_class_name(tile_class)
+                        if len(tiles) == 0:
+                            tile_num = 0
+                        elif len(tiles) == 1:
+                            tile_num = int(tiles[0].text)
+                        else:
+                            for t in tiles:
+                                if 'merged' in t.get_attribute('class'):
+                                    tile_num = int(t.text)
+                                    break
                         state[row][col] = tile_num
-                    except NoSuchElementException:
-                        break
                     except ValueError:
                         pass  # need to wait for game to stabilize
                     except StaleElementReferenceException:

@@ -1,6 +1,7 @@
 """ Tools for reinforcement learning applied to 2048. """
 from typing import List, Tuple
 import os
+import time
 from pathlib import Path
 from io import BytesIO
 from PIL import Image
@@ -78,16 +79,21 @@ class Game2048(Chrome):
             f'img_size={self.img_size}'
             ')'])
 
-    def step(self, action: int) -> Tuple[object, float, bool, dict]:
+    def step(self,
+             action: int,
+             delay: float = 0.5) -> Tuple[object, float, bool, dict]:
         """ Advance the environment based on agent action.
 
-        :param   action: up (0), left (1), down (2), right (3)
-        :type    action: int
-        :return:         state, reward, whether game over, debug info
-        :rtype:          Tuple[object, float, bool, dict]
+        :param action: up (0), left (1), down (2), right (3)
+        :type  action: int
+        :param delay:  seconds to wait for game to update, defaults to 0.5
+        :type  delay:  float, optional
+        :return:       state, reward, whether game over, debug info
+        :rtype:        Tuple[object, float, bool, dict]
         """
         prev_score = self.get_score()
         self.actions[action].perform()
+        time.sleep(delay)
         state = self.get_state()
         reward = self.get_score() - prev_score
         done = self.is_over()
@@ -160,9 +166,17 @@ class Game2048(Chrome):
             status = False
         return status
 
-    def reset(self) -> None:
-        """ Starts a new game. """
+    def reset(self, delay: float = 0.5) -> object:
+        """ Starts a new game.
+
+        :param delay: seconds to wait for game to reload, defaults to 0.5
+        :type  delay: float, optional
+        :return:      initial state
+        :rtype:       object
+        """
         self.find_element_by_class_name('restart-button').click()
+        time.sleep(delay)
+        return self.get_state()
 
     def take_screenshot(self) -> Image:
         """ Take a screenshot of the 16-tile game board.

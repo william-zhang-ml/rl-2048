@@ -153,8 +153,8 @@ class Game2048(Chrome):
             status = False
         return status
 
-    def restart(self) -> None:
-        """ Restarts the game if the game is over; otherwise error. """
+    def reset(self) -> None:
+        """ Starts a new game. """
         self.find_element_by_class_name('restart-button').click()
 
     def take_screenshot(self) -> Image:

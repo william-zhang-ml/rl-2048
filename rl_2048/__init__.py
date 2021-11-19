@@ -1,5 +1,5 @@
 """ Tools for reinforcement learning applied to 2048. """
-from typing import List
+from typing import List, Tuple
 import os
 from pathlib import Path
 from io import BytesIO
@@ -78,13 +78,20 @@ class Game2048(Chrome):
             f'img_size={self.img_size}'
             ')'])
 
-    def act(self, idx: int) -> None:
-        """ Execute a game command: up, left, down, right.
+    def step(self, action: int) -> Tuple[object, float, bool, dict]:
+        """ Advance the environment based on agent action.
 
-        :param idx: index of action to perform:
-        type   idx: int
+        :param   action: up (0), left (1), down (2), right (3)
+        :type    action: int
+        :return:         state, reward, whether game over, debug info
+        :rtype:          Tuple[object, float, bool, dict]
         """
-        self.actions[idx].perform()
+        prev_score = self.get_score()
+        self.actions[action].perform()
+        state = self.get_state()
+        reward = self.get_score() - prev_score
+        done = self.is_over()
+        return state, reward, done, {}
 
     def get_state(self) -> List[List[int]]:
         """ Get the numbers in the 16-tile game board.

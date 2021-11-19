@@ -138,7 +138,7 @@ class Game2048(Chrome):
 
         return int(score_text)
 
-    def game_is_over(self) -> bool:
+    def is_over(self) -> bool:
         """ Check if game is in game over state.
             One sign is whether or not a specific div is class 'game-over'.
 
